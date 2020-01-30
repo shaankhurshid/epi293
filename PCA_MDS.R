@@ -1,11 +1,10 @@
 
 ## plot the PC value computed by EIGENSTRAT
 
-eigen <- read.table("~/Documents/MPH/EPI293/GWA.pca.evec",header=F,as.is=T)
-dim(eigen)
+eigen <- read.table("~/Documents/MPH/EPI293/final/GWA.pca.evec",header=F,as.is=T)
 head(eigen[,1:10])
 
-png('~/Documents/MPH/EPI293/lab4_eigen.png',height=500,width=600)
+png('~/Documents/MPH/EPI293/final/final_eigen.png',height=500,width=600)
 plot(eigen$V2,eigen$V3,main="EIGENSTRAT plot",xlab="PC1",ylab="PC2")
 dev.off()
 
@@ -14,8 +13,7 @@ dev.off()
 
 ## MDS plot of lab2 data
 
-a=read.table("~/Documents/MPH/EPI293/plink.raw",header=T,as.is=T)
-dim(a)
+a=read.table("~/Documents/MPH/EPI293/final/plink.raw",header=T,as.is=T)
 head(a[,1:10])
 
 row.names(a)=paste(a$FID,a$IID,sep=".")
@@ -32,16 +30,13 @@ d=dist(data)
 mds = isoMDS(d,k=10)
 p=as.data.frame(mds$points)
 p$names=rownames(p)
-head(p)
-tail(p)
-dim(p)
 
-png('~/Documents/MPH/EPI293/lab4_mds.png',height=500,width=600)
+png('~/Documents/MPH/EPI293/final/final_mds.png',height=500,width=600)
 plot(p$V1,p$V2,main="MDS plot",xlab="MDS1",ylab="MDS2")
 dev.off()
 
 ## Compare PCA and MDS 
-png('~/Documents/MPH/EPI293/lab4_compare.png',height=500,width=700)
+png('~/Documents/MPH/EPI293/final/final_compare.png',height=500,width=700)
 layout(matrix(1:6,nrow=2))
 plot(p$V1,eigen$V2)
 plot(p$V2,eigen$V3)
@@ -52,8 +47,8 @@ plot(p$V6,eigen$V7)
 dev.off()
 
 ## output the MDS factors to text files, which can be used as input for PLINK in order to correct for population stratification in GWAS
-
-write.table(cbind(a$FID,a$IID,p$V1,p$V2),"~/Documents/MPH/EPI293/MDS_covariates_for_PLINK.txt",col.name=F,row.name=F,quote=F,sep="\t")
+mds <- cbind(a$FID,a$IID,p$V1,p$V2)
+write.table(mds,"~/Documents/MPH/EPI293/final/MDS_covariates_for_PLINK.txt",col.name=F,row.name=F,quote=F,sep="\t")
 
 ## (1) MDS plot for simulated population samples
 
@@ -192,7 +187,5 @@ dev.off()
 
 ## Genomic Control pamameter lambda
 lambda_common <- qchisq(median(pval1,na.rm=T),df=1,lower.tail=F)/0.455
-
-
 
 
